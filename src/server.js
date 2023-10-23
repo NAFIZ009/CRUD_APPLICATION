@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const mysql = require('mysql');
+//custom packages
+const dataValidation= require('./middleware/dataValidation');
 
 const app = express();
 dotenv.config();
@@ -21,14 +23,14 @@ const pool=mysql.createPool({
 });
 
 //API
-
+//GET router
 app.get('/users',(req,res,next)=>{
     //query params
     const query=req.query;
     //taking a connection from the pool
     pool.getConnection((err,connection)=>{
-         // if any error occurs
-         if(err) {
+        // if any error occurs
+        if(err) {
             next(err);
         }
         
@@ -55,10 +57,46 @@ app.get('/users',(req,res,next)=>{
     });
 });
 
+//POST router
+app.post('/users',dataValidation,(req,res,next)=>{
+    //sent data from user
+    const data=req.body;
+    //getting connection from the pool
+    pool.getConnection((err,connection)=>{
+        // if any error occurs
+        if(err) {
+            next(err);
+        }
+
+        //data 
+        const {id, name , gender , email , phone ,age , photo , country , address , proffession , relagion}=data;
+
+        //sql
+        const sqlQuery=`insert into users values (${id},'${name}','${gender}','${email}','${phone}',${age},'','${country}','${address}','${proffession}','${relagion}')`;
+
+        connection.query(sqlQuery,(err,result)=>{
+             //if any error occurs
+            if(err) {
+                //releasing the connection
+                connection.release();
+                next(err);
+                return;
+            }else
+            {
+                //sending data
+                res.send({status:'Successful',result:data});    
+            }
+
+            //releasing the connection
+            connection.release();
+        })
+    });
+});
+
 //Error handling middleware
 app.use((err,req,res,next)=>{
+    console.log(err);
     res.status(500).send({status:'error',message:'Server Error'});
-
 });
 
 //listening server

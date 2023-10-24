@@ -96,9 +96,14 @@ app.patch('/users',(req,res,next)=>{
     
 });
 //delete router
-app.delete('/users',(req,res,next)=>{
+app.delete('/users',dataValidation,(req,res,next)=>{
     //query params
     const query=req.query;
+    if(Object.values(query)[0].length==0)
+    {
+        res.status(400).send({status: 'Unsuccessful', message:'Invalid Data'})
+        return;
+    }
     //taking a connection from the pool
     pool.getConnection((err,connection)=>{
         // if any error occurs

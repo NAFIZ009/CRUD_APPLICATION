@@ -92,8 +92,59 @@ app.post('/users',dataValidation,(req,res,next)=>{
     });
 });
 //UPDATE router
-app.patch('/users',(req,res,next)=>{
+app.patch('/users',dataValidation,(req,res,next)=>{
+    //data
+    const body=req.body;
+    if(Object.values(body)[0].length==0)
+    {
+        res.status(400).send({status: 'Unsuccessful', message:'Invalid Data'})
+        return;
+    }
+
+    pool.getConnection((err,connection)=>{
+        // if any error occurs
+        if(err) {
+            next(err);
+        }
+        
+        //SQL query basis on the query parameters given by the user 
+        let elementString='';
+        Object.keys(body.update).forEach((key,index)=>{
+           elementString.concat(`${key}=${body.update[key]}`);
+           if(index!=Object.keys(body.update).length)
+           {
+            elementString.concat(',');
+           }
+        })
+
+
+        const sqlQuery=`UPDATE your_table SET ${elementString} WHERE ${Object.keys(body)[0]} = ${Object.values(body)[0]};
+        `;
+
+        //getting data
+        connection.query(sqlQuery,(err,result)=>{
     
+            //if any error occurs
+            if(err) {
+                //releasing the connection
+                connection.release();
+                next(err);
+            }else
+            {
+                // Check the affectedRows property for checking is data is deleted
+                if (result.affectedRows === 0) {
+                    // Data not found
+                    res.status(400).send({status:'Unsuccessful', message:'No matching data found for Update'});
+                } else {
+                    // Data were deleted successfully
+                    res.send({status:'Successful', message:`User is Updated`})
+                } 
+            }
+
+            //releasing the connection
+            connection.release();
+        });
+    });
 });
 //delete router
 app.delete('/users',dataValidation,(req,res,next)=>{

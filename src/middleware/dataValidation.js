@@ -1,18 +1,13 @@
 //database data schema
 /*
     id int(11) PK 
-    name varchar(10) 
-    gender set('M','F') 
-    email varchar(20) 
+    name varchar(30) 
+    email varchar(50) 
     phone char(11) 
     age int(11) 
-    photo longblob 
-    country varchar(20) 
-    address varchar(20) 
-    proffession varchar(20) 
-    relagion varchar(20)
+    profession varchar(30) 
 */
-const dataCol=["id","name","gender","email","phone","age","photo","country","address","proffession","relagion"];
+const dataCol=["name","email","phone","age","profession"];
 const dataValidation=(req,res,next)=>{
     //sent data from user
     const data=req.body;

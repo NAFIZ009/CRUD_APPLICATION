@@ -68,10 +68,10 @@ app.post('/users',dataValidation,(req,res,next)=>{
         }
 
         //data 
-        const {id, name , gender , email , phone ,age , photo , country , address , proffession , relagion}=data;
+        const {name , email , phone ,age , profession }=data;
 
         //sql
-        const sqlQuery=`insert into users values (${id},'${name}','${gender}','${email}','${phone}',${age},'','${country}','${address}','${proffession}','${relagion}')`;
+        const sqlQuery=`insert into users(name,email,phone,age,profession) values ('${name}','${email}','${phone}',${age},'${profession}')`;
 
         connection.query(sqlQuery,(err,result)=>{
              //if any error occurs
@@ -83,7 +83,7 @@ app.post('/users',dataValidation,(req,res,next)=>{
             }else
             {
                 //sending data
-                res.send({status:'Successful',result:data});    
+                res.send({status:'Successful',result:{id:result.insertId,...data}});    
             }
 
             //releasing the connection
@@ -196,11 +196,27 @@ app.delete('/users',dataValidation,(req,res,next)=>{
 
 //Error handling middleware
 app.use((err,req,res,next)=>{
-    console.log(err);
-    res.status(500).send({status:'error',message:'Server Error'});
+    console.log(err.message);
+    if(err.message.includes('ER_DUP_ENTRY'))
+    {
+        res.status(400);
+        if(err.message.includes('unique_constraint_name2')){
+            res.send({status: 'Unsuccessful', message:`Duplicate Data in Phone Number`});
+        }else if(err.message.includes('unique_constraint_name'))
+        {
+            res.send({status: 'Unsuccessful', message:`Duplicate Data in Email`});
+        }else
+        {
+            res.send({status: 'Unsuccessful', message:`Duplicate Data in Email and Phone Number`});
+        }
+    }else
+    {
+        res.status(500).send({status:'error',message:'Server Error'});
+    }
+    
 });
 
 //listening server
 app.listen(process.env.PORT,()=>{
     console.log('listening on port '+process.env.PORT);
-})
+});

@@ -10,17 +10,23 @@
 const dataCol=["name","email","phone","age","profession"];
 const dataValidation=(req,res,next)=>{
     //sent data from user
-    const data=req.body;
+    let data;
+    if(req.method=="POST"){
+        data=req.body;
+    }else if(req.method=="GET"){
+        data=req.query;
+    }
+    let valid=true;
     (Object.keys(data)).forEach(key=>{
         if(!dataCol.includes(key))
         {
-            res.status(400).send({status: 'Unsuccessful', message:'Invalid Data'})
+            valid=false;
             return;
         }
     });
 
     //data is valid
-    next();
+    valid?next():res.status(400).send({status: 'Unsuccessful', message:'Invalid Data'});
 }
 
 module.exports=dataValidation;

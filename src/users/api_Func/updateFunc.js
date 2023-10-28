@@ -2,15 +2,6 @@
 const pool=require('../../config/pool');
 
 const updateFunc=(req,res,next)=>{
-    /*
-        {
-            "id": "value"
-            update:{
-                "field":"value",
-                .... : ....
-            }
-        }
-    */
     //data
     const body=req.body;
     console.log(body);

@@ -3,7 +3,7 @@
 ### Name : CRUD APPLICATION
 ### URL : https://crud-application-ss8x.onrender.com/
 ### Github : https://github.com/NAFIZ009/CRUD_APPLICATION
-### Description : Our API server is built using Express.js and MySQL, incorporating all necessary CRUD (Create, Read, Update, Delete) endpoints for managing user information. It follows industry best practices for performance and maintainability, adhering to RESTful principles for efficient and standardized operations.
+### Description : CRUD API server is built using Express.js and MySQL, incorporating all necessary CRUD (Create, Read, Update, Delete) endpoints for managing data. It follows industry best practices for performance and maintainability, adhering to RESTful principles for efficient and standardized operations.
 
 # Key Features:
 

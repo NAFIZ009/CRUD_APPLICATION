@@ -1,12 +1,4 @@
-//database data schema
-/*
-    id int(11) PK 
-    name varchar(30) not null
-    email varchar(50) not null
-    phone char(11) not null
-    age int(11) 
-    profession varchar(30) 
-*/
+
 const dataCol=["name","email","phone","age","profession"];
 const dataValidation=(req,res,next)=>{
     //sent data from user

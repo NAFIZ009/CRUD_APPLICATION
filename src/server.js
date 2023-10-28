@@ -15,8 +15,12 @@ app.use('/users',require('../src/users/users.js'));
 
 
 app.get('/',(req,res)=>{
-    res.json({'Message':'Welcome To The CRUD SERVER','Paths':{'/users':'Get Users','/users/create':'Create User','/users/update':'Update User','/users/delete':'Delete User'},'Server':{'Github':'https://github.com/NAFIZ009/CRUD_APPLICATION'},'Author':{'Name':'Jalal Ahmed','Email':'jalalahmednafiz@gmail.com',
-    'Linkedin':'https://www.linkedin.com/in/jalal-ahmed-nafiz-/','Github':'https://github.com/NAFIZ009'}});
+    const jsonData={'Message':'Welcome To The CRUD SERVER','Paths':{'/users':'Get Users','/users/create':'Create User','/users/update':'Update User','/users/delete':'Delete User'},'Server':{'Github':'https://github.com/NAFIZ009/CRUD_APPLICATION'},'Author':{'Name':'Jalal Ahmed','Email':'jalalahmednafiz@gmail.com',
+    'Linkedin':'https://www.linkedin.com/in/jalal-ahmed-nafiz-/','Github':'https://github.com/NAFIZ009'}};
+    
+    res.json(jsonData);
+    
+
 });
 
 //Error handling middleware

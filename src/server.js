@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const mysql = require('mysql');
+//port
+const PORT=process.env.PORT || 3001;
 //custom packages
 const dataValidation= require('./middleware/dataValidation');
 
@@ -224,6 +226,6 @@ app.use((err,req,res,next)=>{
 });
 
 //listening server
-app.listen(process.env.PORT,()=>{
-    console.log('listening on port '+process.env.PORT);
+app.listen(PORT,()=>{
+    console.log('listening on port '+PORT);
 });
